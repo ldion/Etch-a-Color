@@ -13,12 +13,14 @@
 $(document).ready(function() {
 var time = new Date();
 var color = 'black';
+var invert = false;
 
 $(document).keydown(function(e){
     var now= new Date();
     if(now.getTime() > time.getTime() + 400) {
         time = now;
-    if(e.keyCode == 40){
+    
+    if(e.keyCode == 40 && invert == false){
         if($("#here").position().top <= 280){
         $("#here").animate({top: "+=10"});
         var line = $('<div class="line">');
@@ -31,7 +33,7 @@ $(document).keydown(function(e){
         $("#draw").append(line);
         }
     }
-    if(e.keyCode == 39){
+    if(e.keyCode == 39 && invert == false){
         if($("#here").position().left <= 280){
         $("#here").animate({left: "+=10"});
         var line = $('<div class="line">');
@@ -44,7 +46,7 @@ $(document).keydown(function(e){
         $("#draw").append(line);
         }
     }
-    if(e.keyCode == 38){
+    if(e.keyCode == 38 && invert == false){
         if($("#here").position().top >= 20){
         $("#here").animate({top: "-=10"});
         var line = $('<div class="line">');
@@ -57,7 +59,7 @@ $(document).keydown(function(e){
         $("#draw").append(line);
         }
     }
-    if(e.keyCode == 37){
+    if(e.keyCode == 37 && invert == false){
         if($("#here").position().left >= 20){
         $("#here").animate({left: "-=10"});
         var line = $('<div class="line">');
@@ -70,39 +72,97 @@ $(document).keydown(function(e){
         $("#draw").append(line);
         }
     }
-    if(e.keyCode == 68) {
-            $('.line').effect("shake");
+    if(e.keyCode == 68 && invert == false) {
+            $('.line, #draw').effect("shake");
             $('.line').fadeOut(1000, function(){
                 $('.line').remove();
             });
         }
     }
-    if(e.keyCode == 49) {
+    if(e.keyCode == 49 && invert == false) {
         color = 'black';
     }
-    if(e.keyCode == 50) {
+    if(e.keyCode == 50 && invert == false) {
         color = 'red';
     }
-    if(e.keyCode == 51) {
+    if(e.keyCode == 51 && invert == false) {
         color = 'orange';
     }
-    if(e.keyCode == 52) {
+    if(e.keyCode == 52 && invert == false) {
         color = 'yellow';
     }
-    if(e.keyCode == 53) {
+    if(e.keyCode == 53 && invert == false) {
         color = 'green';
     }
-    if(e.keyCode == 54) {
+    if(e.keyCode == 54 && invert == false) {
         color = 'blue';
     }
-    if(e.keyCode == 55) {
+    if(e.keyCode == 55 && invert == false) {
         color = 'purple';
     }
-    if(e.keyCode == 56) {
+    if(e.keyCode == 56 && invert == false) {
         color = 'white';
     }
+
+if(e.keyCode == 57) {
+        if(invert == false) {
+            $('#draw').css('background', 'black');
+            $('.line').each(function(index) {
+                var c = $(this).css('background-color');
+                var rgb = c.match(/\d+/g);
+                for(var i in rgb) {
+                  rgb[i] = 255-rgb[i];
+                }
+                $(this).css('background','rgb('+rgb[0]+', '+rgb[1]+', '+rgb[2]+')');
+                console.log(index + $(this).css('border-top-color'));
+                var bc = $(this).css('border-top-color');
+                var rgb2 = bc.match(/\d+/g);
+                for(var i in rgb2) {
+                  rgb2[i] = 255-rgb2[i];
+                }
+                $(this).css('border-color','rgb('+rgb2[0]+', '+rgb2[1]+', '+rgb2[2]+')');
+            });
+            invert = true;
+        }
+        else {
+            $('#draw').css('background', 'white');
+             $('.line').each(function(index) {
+                var c = $(this).css('background-color');
+                var rgb = c.match(/\d+/g);
+                for(var i in rgb) {
+                  rgb[i] = 255-rgb[i];
+                }
+                $(this).css('background','rgb('+rgb[0]+', '+rgb[1]+', '+rgb[2]+')');
+           var bc = $(this).css('border-top-color');
+                var rgb2 = bc.match(/\d+/g);
+                for(var i in rgb2) {
+                  rgb2[i] = 255-rgb2[i];
+                }
+                $(this).css('border-color','rgb('+rgb2[0]+', '+rgb2[1]+', '+rgb2[2]+')');
+            });
+            invert = false;
+        }
+    }
 });
+
 });
 </script>
+<div id="key">
+    <pre>
+    Key:
+        Arrow keys = move current location, draw a line
+        d = delete
+    Colors:
+        1 = black
+        2 = <span style="color:red;">red</span>
+        3 = <span style="color:orange;background: black">orange</span>
+        4 = <span style="color:yellow; background: black">yellow</span>
+        5 = <span style="color:green;">green</span>
+        6 = <span style="color:blue;">blue</span>
+        7 = <span style="color:purple;">purple</span>
+        8 = white (erase)
+	9 = invert colors (cannot draw in invert mode)
+    </pre>
+</div>
 </body>
 </html>
